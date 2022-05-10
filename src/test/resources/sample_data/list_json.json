@@ -1,0 +1,133 @@
+[
+  {
+    "airlineName": "Delta",
+    "code": "A1B2C3",
+    "departureDate": "2018/03/20",
+    "destination": "SFO",
+    "emptySeats": "40",
+    "origin": "MUA",
+    "planeType": "Boing 737",
+    "price": "400.0",
+    "truknij": "blademu"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A1BTT4",
+    "departureDate": "2018/02/12",
+    "destination": "SFO",
+    "emptySeats": "30",
+    "origin": "MUA",
+    "planeType": "Boing 777",
+    "price": "593.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A14244",
+    "departureDate": "2018/02/12",
+    "destination": "SFO",
+    "emptySeats": "10",
+    "origin": "MUA",
+    "planeType": "Boing 787",
+    "price": "294.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A1B2C4",
+    "departureDate": "2018/02/11",
+    "destination": "LAX",
+    "emptySeats": "10",
+    "origin": "MUA",
+    "planeType": "Boing 737",
+    "price": "199.99"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A134DS",
+    "departureDate": "2018/04/11",
+    "destination": "LAX",
+    "emptySeats": "40",
+    "origin": "MUA",
+    "planeType": "Boing 777",
+    "price": "750.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A1QWER",
+    "departureDate": "2018/08/11",
+    "destination": "LAX",
+    "emptySeats": "18",
+    "origin": "MUA",
+    "planeType": "Boing 747",
+    "price": "496.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A1FGF4",
+    "departureDate": "2018/02/13",
+    "destination": "PDX",
+    "emptySeats": "80",
+    "origin": "MUA",
+    "planeType": "Boing 777",
+    "price": "958.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "AFFFC4",
+    "departureDate": "2018/02/20",
+    "destination": "PDX",
+    "emptySeats": "30",
+    "origin": "MUA",
+    "planeType": "Boing 777",
+    "price": "283.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A1B3D4",
+    "departureDate": "2018/02/12",
+    "destination": "PDX",
+    "emptySeats": "10",
+    "origin": "MUA",
+    "planeType": "Boing 777",
+    "price": "385.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A1B34S",
+    "departureDate": "2018/06/11",
+    "destination": "CLE",
+    "emptySeats": "50",
+    "origin": "MUA",
+    "planeType": "Boing 707",
+    "price": "420.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A12342",
+    "departureDate": "2018/07/11",
+    "destination": "CLE",
+    "emptySeats": "17",
+    "origin": "MUA",
+    "planeType": "Boing 727",
+    "price": "308.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A14444",
+    "departureDate": "2017/09/21",
+    "destination": "CLE",
+    "emptySeats": "0",
+    "origin": "MUA",
+    "planeType": "Boing 777",
+    "price": "1308.0"
+  },
+  {
+    "airlineName": "Delta",
+    "code": "A1ASD4",
+    "departureDate": "2017/09/11",
+    "destination": "CLE",
+    "emptySeats": "40",
+    "origin": "MUA",
+    "planeType": "Boing 757",
+    "price": "736.0"
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "sampleData": {
+    "c6c239c0-3b64-45c2-8eb4-a2781ce88f3a": {
+      "payload": "sample_data/json.json"
+    },
+    "cd3a49b2-f63e-4f6c-bf9a-30045c8b136a": {
+      "payload": "sample_data/findflightresponse.xml"
+    },
+    "5accfcdc-2a8f-436e-877d-217b7145a04c": {
+      "payload": "sample_data/list_json.json"
+    },
+    "7765ff67-3821-41da-aca3-fb6aa02949c6": {
+      "payload": "sample_data/findFlightResponse_1.xml"
+    },
+    "2cad96a5-cc69-4369-b480-e56b6688e3e2": {
+      "payload": "sample_data/findFlightResponse_2.xml"
+    },
+    "4e2eeaa6-c8d0-4855-b393-81f5cca12acd": {
+      "payload": "sample_data/list_json_3.json"
+    },
+    "dcb9b339-01bc-4bc3-9f60-8e53169a398e": {
+      "payload": "sample_data/list_json_4.json"
+    },
+    "b9fc29d9-ec01-4503-a393-199ccdd6e41f": {
+      "payload": "sample_data/json_1.json"
+    }
+  }
+}

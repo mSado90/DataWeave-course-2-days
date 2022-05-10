@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="flight_json" format="json">
+      <types:shape format="weave" example="examples/flight-example.json"><![CDATA[%dw 2.0
+
+type flight_json = {|
+  airline: String, 
+  flightCode: String, 
+  fromAirportCode: String, 
+  toAirportCode: String, 
+  departureDate: String, 
+  emptySeats: Number {"typeId": "int"}, 
+  totalSeats: Number {"typeId": "int"}, 
+  price: Number {"typeId": "int"}, 
+  planeType: String
+|} {"example": "{\\\"airline\\\":\\\"United\\\",\\\"flightCode\\\":\\\"ER38sd\\\",\\\"fromAirportCode\\\":\\\"LAX\\\",\\\"toAirportCode\\\":\\\"SFO\\\",\\\"departureDate\\\":\\\"May 21, 2016\\\",\\\"emptySeats\\\":0,\\\"totalSeats\\\":200,\\\"price\\\":199,\\\"planeType\\\":\\\"Boeing 737\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="flights_xml" format="xml">
+      <types:example format="xml" element="{http://soap.training.mulesoft.com/}findFlightResponse" location="examples/deltaSoapResponsesToAllDestinations.xml"/>
+    </types:type>
+    <types:type name="flights_json" format="json">
+      <types:shape format="weave" example="examples/flights_example.json"><![CDATA[%dw 2.0
+
+type flights_json = Array<{|  airlineName: String,   code: String,   departureDate: String,   destination: String,   emptySeats: String,   origin: String,   planeType: String,   price: String|}> {"example": "[{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A1B2C3\\\",\\\"departureDate\\\":\\\"2018\\/03\\/20\\\",\\\"destination\\\":\\\"SFO\\\",\\\"emptySeats\\\":\\\"40\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 737\\\",\\\"price\\\":\\\"400.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A1BTT4\\\",\\\"departureDate\\\":\\\"2018\\/02\\/12\\\",\\\"destination\\\":\\\"SFO\\\",\\\"emptySeats\\\":\\\"30\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 777\\\",\\\"price\\\":\\\"593.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A14244\\\",\\\"departureDate\\\":\\\"2018\\/02\\/12\\\",\\\"destination\\\":\\\"SFO\\\",\\\"emptySeats\\\":\\\"10\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 787\\\",\\\"price\\\":\\\"294.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A1B2C4\\\",\\\"departureDate\\\":\\\"2018\\/02\\/11\\\",\\\"destination\\\":\\\"LAX\\\",\\\"emptySeats\\\":\\\"10\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 737\\\",\\\"price\\\":\\\"199.99\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A134DS\\\",\\\"departureDate\\\":\\\"2018\\/04\\/11\\\",\\\"destination\\\":\\\"LAX\\\",\\\"emptySeats\\\":\\\"40\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 777\\\",\\\"price\\\":\\\"750.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A1QWER\\\",\\\"departureDate\\\":\\\"2018\\/08\\/11\\\",\\\"destination\\\":\\\"LAX\\\",\\\"emptySeats\\\":\\\"18\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 747\\\",\\\"price\\\":\\\"496.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A1FGF4\\\",\\\"departureDate\\\":\\\"2018\\/02\\/13\\\",\\\"destination\\\":\\\"PDX\\\",\\\"emptySeats\\\":\\\"80\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 777\\\",\\\"price\\\":\\\"958.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"AFFFC4\\\",\\\"departureDate\\\":\\\"2018\\/02\\/20\\\",\\\"destination\\\":\\\"PDX\\\",\\\"emptySeats\\\":\\\"30\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 777\\\",\\\"price\\\":\\\"283.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A1B3D4\\\",\\\"departureDate\\\":\\\"2018\\/02\\/12\\\",\\\"destination\\\":\\\"PDX\\\",\\\"emptySeats\\\":\\\"10\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 777\\\",\\\"price\\\":\\\"385.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A1B34S\\\",\\\"departureDate\\\":\\\"2018\\/06\\/11\\\",\\\"destination\\\":\\\"CLE\\\",\\\"emptySeats\\\":\\\"50\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 707\\\",\\\"price\\\":\\\"420.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A12342\\\",\\\"departureDate\\\":\\\"2018\\/07\\/11\\\",\\\"destination\\\":\\\"CLE\\\",\\\"emptySeats\\\":\\\"17\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 727\\\",\\\"price\\\":\\\"308.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A14444\\\",\\\"departureDate\\\":\\\"2017\\/09\\/21\\\",\\\"destination\\\":\\\"CLE\\\",\\\"emptySeats\\\":\\\"0\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 777\\\",\\\"price\\\":\\\"1308.0\\\"},{\\\"airlineName\\\":\\\"Delta\\\",\\\"code\\\":\\\"A1ASD4\\\",\\\"departureDate\\\":\\\"2017\\/09\\/11\\\",\\\"destination\\\":\\\"CLE\\\",\\\"emptySeats\\\":\\\"40\\\",\\\"origin\\\":\\\"MUA\\\",\\\"planeType\\\":\\\"Boing 757\\\",\\\"price\\\":\\\"736.0\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="american_flights_response" format="json">
+      <types:shape format="weave" example="examples/americanFlightsResponse.json"><![CDATA[%dw 2.0
+
+type american_flights_response = Array<{|  ID: Number {"typeId": "int"},   code: String,   price: Number {"typeId": "int"},   departureDate: String,   origin: String,   destination: String,   emptySeats: Number {"typeId": "int"},   plane: {|    "type": String,     totalSeats: Number {"typeId": "int"}  |}|}> {"example": "[{\\\"ID\\\":9,\\\"code\\\":\\\"eefd3000\\\",\\\"price\\\":900,\\\"departureDate\\\":\\\"2018-02-01T00:00:00\\\",\\\"origin\\\":\\\"MUA\\\",\\\"destination\\\":\\\"SFO\\\",\\\"emptySeats\\\":0,\\\"plane\\\":{\\\"type\\\":\\\"Boeing 737\\\",\\\"totalSeats\\\":150}},{\\\"ID\\\":7,\\\"code\\\":\\\"eefd1994\\\",\\\"price\\\":676,\\\"departureDate\\\":\\\"2018-01-01T00:00:00\\\",\\\"origin\\\":\\\"MUA\\\",\\\"destination\\\":\\\"SFO\\\",\\\"emptySeats\\\":0,\\\"plane\\\":{\\\"type\\\":\\\"Boeing 777\\\",\\\"totalSeats\\\":300}},{\\\"ID\\\":5,\\\"code\\\":\\\"rree1093\\\",\\\"price\\\":142,\\\"departureDate\\\":\\\"2018-02-11T00:00:00\\\",\\\"origin\\\":\\\"MUA\\\",\\\"destination\\\":\\\"SFO\\\",\\\"emptySeats\\\":1,\\\"plane\\\":{\\\"type\\\":\\\"Boeing 737\\\",\\\"totalSeats\\\":150}},{\\\"ID\\\":8,\\\"code\\\":\\\"ffee2000\\\",\\\"price\\\":300,\\\"departureDate\\\":\\\"2018-02-20T00:00:00\\\",\\\"origin\\\":\\\"MUA\\\",\\\"destination\\\":\\\"SFO\\\",\\\"emptySeats\\\":30,\\\"plane\\\":{\\\"type\\\":\\\"Boeing 737\\\",\\\"totalSeats\\\":150}},{\\\"ID\\\":11,\\\"code\\\":\\\"rree4567\\\",\\\"price\\\":456,\\\"departureDate\\\":\\\"2018-01-20T00:00:00\\\",\\\"origin\\\":\\\"MUA\\\",\\\"destination\\\":\\\"SFO\\\",\\\"emptySeats\\\":100,\\\"plane\\\":{\\\"type\\\":\\\"Boeing 737\\\",\\\"totalSeats\\\":150}}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#c6c239c0-3b64-45c2-8eb4-a2781ce88f3a">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flight_json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#cd3a49b2-f63e-4f6c-bf9a-30045c8b136a">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flights_xml"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#5accfcdc-2a8f-436e-877d-217b7145a04c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flights_json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#7765ff67-3821-41da-aca3-fb6aa02949c6">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flights_xml"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#2cad96a5-cc69-4369-b480-e56b6688e3e2">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flights_xml"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#4e2eeaa6-c8d0-4855-b393-81f5cca12acd">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="american_flights_response"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#dcb9b339-01bc-4bc3-9f60-8e53169a398e">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flights_json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b9fc29d9-ec01-4503-a393-199ccdd6e41f">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="flight_json"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

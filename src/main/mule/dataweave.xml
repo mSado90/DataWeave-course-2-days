@@ -1,0 +1,669 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="review" doc:id="8378a09b-cab6-49f2-a553-58511283dcf9" >
+		<ee:transform doc:name="Transform Message" doc:id="c6c239c0-3b64-45c2-8eb4-a2781ce88f3a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var bool = false
+var data = []
+var myKey = "airline"
+---
+//construct objects and arrays
+//{	}
+//[	]
+//{
+
+//warunkowe składniki obiektów:
+//	(a: 1) if (bool),
+//	(b: 2) if (bool)
+//} 
+
+//!! ctrl + shift + c to multi-line comment
+
+//positions and ranges:
+//[1,5,3][-1]
+//[2,5,6,3,8,9][1 to 3]
+//[2,5,6,3,8,9][-3 to -2]
+//(0 to 100)[-1 to 0]
+
+//strings -> under the hood string is an array
+//"ABCDEFG"[5]
+//typeOf(data)
+//sizeOf("ffsdseaaavv")
+//[2,6,4] contains "fdf"
+
+//1 + 2 - 3 // 3 - 3 = 0 -> w ten sposób używamy DW, od lewej do prawej; using input of the next
+
+//infix syntax : value1 func vaule2, easy to maintain, works with 2-parameter functions
+//[2,5,3,7,8] map $ + 1 map $ * 101
+
+//traditional function calls, ugly and difficult ot maintain
+//map(map([2,5,3,7,8], (x) -> x + 1), (x) -> x * 101) 
+
+
+
+//manipulating payload
+//payload[myKey]
+
+//!!! indexes are also for objects
+//payload[sizeOf(payload) - 1]
+
+//payload.airline!
+//payload.destination!
+
+
+// !! ways of concatenating
+//"The flight is operated by " ++ payload.airline
+"The flight is operated by $(payload.airline)"
+// !! $() is called an expression evaluator !!
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="xml2json" doc:id="ab87915b-d629-4035-aa4c-c098a212ef5e" >
+		<ee:transform doc:name="Transform Message" doc:id="cd3a49b2-f63e-4f6c-bf9a-30045c8b136a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+// !! best structure for JSON to have is an array of single objects
+// with "dw" output we are revealing how dw sees input structure
+// !!!! xmls are only about OBJECTS, not ARRAYS !!!
+// !!!! JSON is about OBJECTS AND ARRAYS !!!
+
+
+// "..*" iteratively traverses through ENTIRE data structure
+// ".." gives iteratively ony FIRST element
+
+payload..*return
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="json2xml" doc:id="079c8f77-67d4-4d5d-9002-083d9d71cd01" >
+		<ee:transform doc:name="Transform Message" doc:id="5accfcdc-2a8f-436e-877d-217b7145a04c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+---
+//flights: {(payload map flight: $)} is using destructor and constructing manually an object
+//most performance comes from how many iterations to we have to make
+//test1: test2: test3: 220.4
+
+flights: flight: payload
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="functions" doc:id="4268ea83-71c3-4ed4-bcb5-3a5bb2ce3ef8" >
+		<ee:transform doc:name="Transform Message" doc:id="7765ff67-3821-41da-aca3-fb6aa02949c6" >
+			<ee:message >
+				<ee:set-payload resource="functions.dwl" />
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="chainable" doc:id="ed6bacde-fa0b-4f10-80c9-def78303e858" >
+		<ee:transform doc:name="Transform Message" doc:id="2bb59cb9-f18b-4c92-a317-aea17aacd983" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+
+import dw::core::Strings as Strings
+
+var obj = {
+	one: "One",
+	two: "tWO"
+}
+
+fun chain(anInput, expression) = expression(anInput)
+
+---
+
+
+//([15,3,7,9,4,2,1,0] filter ($ mod 2) == 1 orderBy $) [-1 to -2]
+//we cannot use operation (as range selector) as infix notation; we need to include all in ()
+
+
+// !!!!!!!!!
+//how to make a pipeline with 1-param function?
+
+//obj chain (x) -> (x.one ++ ' ' ++ x.two)  //as an expression lambda func is passed (without a name)
+
+// upper(obj chain (x) -> (x.one ++ ' ' ++ x.two))
+
+obj chain (x) -> (x.one ++ '_' ++ x.two) chain Strings::camelize  //jeszcze hiper skrócona wersja: chain (x) -> upper(x)
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="reuse" doc:id="7fd2299d-d42c-4171-b6a1-b0d786760920" >
+		<ee:transform doc:name="Transform Message" doc:id="2cad96a5-cc69-4369-b480-e56b6688e3e2" >
+			<ee:message >
+				<ee:set-payload resource="functions.dwl"/>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="matcher" doc:id="1caca879-03f0-461a-95c2-bc11f56974d3" >
+		<ee:transform doc:name="Transform Message" doc:id="9a894417-5149-4ed4-9be3-39d3528bcf58" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+
+//concatenation: ++ , evaluation inside a string: "$()"
+
+//creating null-safe operation - beeing defensive
+fun matcher(v : Null) = "Null Found"
+fun matcher(v : Array) = "Array of size $(sizeOf(v) as String)"
+fun matcher(v : Object) = "Object of size $(sizeOf(v) as String)"
+fun matcher(v : String) = "String of size $(sizeOf(v) as String)"
+
+//tutaj w tym formacie możemy od razu zaokrąglić liczbę ->
+fun matcher(v : Number) = "Number $(v as String{format: '#.00'})"
+
+---
+
+matcher(11127.196)
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="matcher2" doc:id="121632f1-7ee4-42f9-b9e9-b37d79b379a5" >
+		<ee:transform doc:name="Transform Message" doc:id="43ef47b9-a6f7-4268-a49b-1beeb23183a0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+
+fun callfun(a : Array) = "some test, return bollean"
+
+---
+
+[] match {
+	
+	// klasycznie : case is Array -> "Array found"
+	//można w ten sposób, ze zmienną a w tej linijce
+	case a if(callfun(a) is Array) -> "Array found"
+	case o if(o is Object)	-> "Object found"	
+	case s if(s is String)	-> "String found"	
+	case n if(n is Number)	-> "Number found"
+	case n if(n == 10) -> "10 found!!!"
+	else -> $
+	
+}
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="errors" doc:id="12b22e75-1597-4e2a-8134-d88408327acc" >
+		<ee:transform doc:name="Transform Message" doc:id="5070b86a-61ac-4114-b9ea-d49cce1e1490" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+import * from dw::Runtime
+
+var guard = (fn) ->
+	try(fn) match {
+		case tr if (tr.success) -> tr.result
+		else -> $.error.message
+}
+
+//dates are particularly problematic:
+
+var dates = [
+	"11/01/2019",
+	"01/01/2030",
+	"03/29/2011",
+	"14/04/2005",
+	"44/dd/2004",
+	"12/12/1990"
+]
+
+---
+
+//guard(() -> 10/0)
+
+dates map (
+	
+	guard(() -> $ as Date {format: "dd/MM/yyyy"})
+	
+) filter ($ is Date)
+
+//despite the errors, the script component will not throw an error
+//take this script and extend it --> test and play with it !!!!!! :)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="addAndConcat" doc:id="37cf51aa-5084-429e-9227-d928aed24001" >
+		<ee:transform doc:name="Transform Message" doc:id="d060fc2c-226b-4410-9329-355af62a5494" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+
+var array = [1, "a", true]
+
+var object = {
+	one: "one1",
+	two: "two2"
+}
+
+---
+
+{
+	//arrayPlusArray: array + array, 								//inserts this second array into the existing array
+	//arrayConcatArray: array ++ array, 							//squashes the arrays together into one new
+	//arrayPlusObject: array + object, 								//insert object into an array
+	//arrayConcatObject: array ++ object 							//cannot do so !!!!
+	//objectConcatObject: object ++ object,
+	//objectConcatObjectFilter1: object ++ object - "one",			//removes "one" key but only from 2nd object !!!,
+																	//because operator "-" has a precedence before "++" function
+									
+	//objectConcatObjectFilter2: (object ++ object) - "one",		//here we force that "++" is executed first !!!
+	//objectConcatObjectFilter3: object ++ object -- "one"			//cannot do so because "one" is not type object !!!!
+	objectConcatObjectFilter5: object ++ object -- one: "one1",		//can do so 
+	objectConcatObjectFilter6: object ++ object -- one: "one2",
+	objectConcatObjectFilter7: object ++ object -- object,
+	objectConcatObjectFilter2: object ++ (object -- object)
+}
+
+
+
+//NOTCIE : still not having to use "map" or "mapObject"  !!!!
+
+
+
+
+
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="zipAndUnzip" doc:id="2857ceb5-10e0-4654-8ce9-97431d94461e" >
+		<ee:transform doc:name="Transform Message" doc:id="1230c819-c98b-43a5-86bc-b3175e922f7a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+
+
+var array1 = ["A", "B", "C", "D"]
+var array2 = [1, 2, 3]
+
+
+---
+
+{
+	//zip: array1 zip array2,							//we lost "D" here :( !!!!
+	//zip2: flatten( zip (array1, array2) ), 			//destroys the hierarchy
+	unzip: unzip(zip (array1, array2))
+}
+
+
+
+//zip & unzip we found as purpose of manipul. data in different languages, libr. for manipul]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="constructAnObject" doc:id="00e13d98-f374-4de2-919b-bb106e5d82dc" >
+		<ee:transform doc:name="Transform Message" doc:id="a9f13f34-780f-4277-ad50-6f712da0b916" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+
+
+var array = [1, "a", true]
+
+var object = {
+    one: "one1",
+    two: "two2"
+    }
+    
+var array2 = [
+    objOne: object,
+    objTwo: object
+]
+
+
+---
+
+
+{
+	//original: array2,
+	//extracted: { ( array2 ) }												//WOOOWW !!! TAKING AN ARRAY OF OBJECTS AND MAKE ONE OBJECT, for xml made - xml does not understand arrays
+	addToObject: { ( array2 ), ( object ), four: "four4", five: 5 }			//() are evaluate parenthesis here
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="testArrays" doc:id="a4080745-2f5f-4c67-8861-4b3b13b83960" >
+		<ee:transform doc:name="Transform Message" doc:id="4e2eeaa6-c8d0-4855-b393-81f5cca12acd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+import * from dw::core::Arrays				//importnat to import Arrays module
+
+
+---
+
+
+{
+	total: payload..totalSeats,
+	some: some(payload..totalSeats, (ts) -> (ts > 400)),							
+	every: payload..totalSeats every ($ < 400),
+	smallPlanes: payload..totalSeats countBy ($ < 200),
+	totalPlanes: sizeOf(payload),
+	totalSeatsAllPlanes: payload..totalSeats sumBy $,								//someBy - very useful
+	totalSeatsSmallPlanes: payload..totalSeats sumBy (if ($ < 200) $ else 0),		//can be used with conditions
+	totalSeatsSmallPlanes2: payload..totalSeats filter ($ < 200) sumBy $,
+	splitArray: payload..totalSeats divideBy (2),
+	splitArrayAndFlatten: flatten(payload..totalSeats divideBy (2))
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="testObject" doc:id="177dc71d-7f2c-454d-9d42-cd376569eb18" >
+		<ee:transform doc:name="Transform Message" doc:id="51ee67df-045d-425c-9448-fc8e13b32338" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw 						//we always develop in dw output !!!
+import * from dw::core::Objects
+ns myns http://asme.org						//namespace declaration, we use domain name that is unique to our organisation
+
+
+//object with namespace and attributes
+var object = {
+    users: {
+        myns#user1 @( name: "Annie", lastname: "Point" ): "AP",
+        myns#user2 @( name: "Connie", lastname: "Hektor" ): "CH"
+    }
+}
+
+---
+
+{one: "One1", one: "One1", two: "Two2"} mergeWith {one: "NumberNewValue"}
+//actually de-duplicates the object
+
+//{
+//	object: object,
+//	nameSpace: object.users[1].#,
+//	attributesName: object.users..@name,
+//	attributesLastName: object.users..@lastname,
+//	valueSet: valueSet(object.users),
+//	nameSet: nameSet(object.users),
+//	keySet: keySet(object.users),
+//	entrySet: entrySet(object.users),
+//	entrySetNS: entrySet(object.users) map $.key.#,
+//	entriesOfAttributes: entriesOf(object.users) map $.attributes
+//}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="modifyEnhanceEnrichObjectsFlights" doc:id="ee93f9eb-a318-4e18-af3b-8b0945fad552" >
+		<ee:transform doc:name="Transform Message" doc:id="dcb9b339-01bc-4bc3-9f60-8e53169a398e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+
+//obj to change key names
+var fs2fs = {
+    airlineName: "carrier",
+    departureDate: "date",
+    origin: "start",
+    destination: "finish"
+}
+
+
+
+//increased efficeincy, xml ready, much more performant way; best solution
+var airportInfo = (readUrl("classpath://airportInfoTiny.csv", "application/csv") as Array
+	distinctBy $.IATA  
+	groupBy $.IATA) as Object
+	mapObject {
+		($$): $[0] -- ["timeZone", "type", "source"]			
+		//getting rid of redundant fields
+	}
+
+	
+
+//func to filter for IATA
+var airportInfoFilterByIATA = (d) -> airportInfo filter (e, i) -> e.IATA == d
+
+//func for generic filter of any given list of information
+var genericFilter = (a, f, v) -> a filter $[f] == v
+
+//more generic func taking fun as an parameter
+var genericFilterFn = (a, fn) -> a filter fn($)
+
+
+
+
+// !!!!!! funcion to load some values into the fucntion AT THE RUNTIME !!!! (curried functions) !!!!!!
+
+//curried functions -> currying  (multiple params separated by arrows)
+var genericFilterFnC = (a) -> (fn) -> a filter fn($)						//firstly set a, then at some point set fn
+var airportInfoFilter = genericFilterFnC(airportInfo)						//partial application, because we only apply 1st parameter
+
+
+var reorder = (o, ris) -> do {
+	
+	var fs = o pluck $$
+	---
+	ris map { (fs[$]) : o[$] 
+	} reduce (e, acc = {}) -> acc ++ e
+	
+}
+
+// FINAL FUNCTION TO REFACTOR OUTPUT - combined overloading and traversing (recursion))
+//fun traverse(a : Array) = a map traverse($)
+//fun traverse(o : Object) = o mapObject{
+//	(traverse($$)): traverse($)
+//} 
+//fun traverse(k : Key) = upper(trim(k))
+//fun traverse(s : String) = lower(s)
+
+fun traverseFn(a : Array, fn) = a map ($ traverseFn fn)
+fun traverseFn(o : Object, fn) = o mapObject{
+	($$ traverseFn fn) : ($ traverseFn fn)
+} 
+fun traverseFn(k : Key, fn) = fn(k)
+fun traverseFn(s : String, fn) = fn(s)
+
+
+
+
+---
+
+
+						/// !!!!!!! more flexible way, most generic one !!!!!
+payload map ( $ mapObject (v, k, i) -> 
+	{
+		(fs2fs[k] default k): v		
+	}	
+) map {
+	($ - "finish"),
+	//airportInfoFilter ((e) -> e.IATA == $.finish)[0]		//[0] added for de-duplication		
+	// this is NOT the efficient way !!! it iterates too many times
+	airpotInfo: airportInfo[$.finish]											
+} map (
+	$ reorder (7 to 0)
+) traverseFn (
+	(e) -> e match {
+		case k if (k is Key) -> upper(trim(k))
+		case s if (s is String) -> if (
+			s matches /[+|-]?\d+(\.\d*)?/
+		) s as Number else lower(s)
+		else -> $
+	}
+)
+						// !!!!!!!
+
+
+
+
+
+
+//script to replace 4 key names with those provided in object given as variable
+
+//payload map ( $ mapObject (v, k, i) -> 
+//	
+//	{
+//		(fs2fs[k] default k): v		
+//	}
+//	
+//)
+
+
+
+
+
+
+
+//enhancing the data with data from outside source like e.g. .csv, using JOINING like in SQL
+
+//payload map ( $ mapObject (v, k, i) -> 
+//	{
+//		(fs2fs[k] default k): v		
+//	}	
+//) map {
+//	($ - "finish"),
+//	//airportInfoFilter ((e) -> e.IATA == $.finish)[0]		//[0] added for de-duplication		
+//	// this is NOT the efficient way !!! it iterates too many times
+//	airpotInfo: airportInfo[$.finish]											
+//} map (
+//	$ reorder (7 to 0)
+//)
+
+
+//function as a paramter for the function is called "predicate"
+
+
+
+
+
+
+
+
+//   				!!!! GOOD SCRIPT HAS MORE IN A HEADER THAN IN A BODY !!!!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="reorder" doc:id="c6757aa7-dcaa-4e62-a3e7-76f121396f55" >
+		<ee:transform doc:name="Transform Message" doc:id="b9fc29d9-ec01-4503-a393-199ccdd6e41f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+import * from dw::core::Objects
+
+
+
+var ds = {
+	flights: {
+		flight: payload
+	}
+}
+
+var path = "flights.flight.planeType"
+
+
+// !!! way to reorder the array of objects
+var reorder = (o, ris) -> do {
+	
+	var fs = o pluck $$
+	---
+	ris map { (fs[$]) : o[$] 
+	} reduce (e, acc = {}) -> acc ++ e
+	
+}
+
+
+
+---
+
+payload reorder [8, 2, 5 ,3 ,7, 6, 1, 4, 0]
+
+
+
+//xPath-like stuff - WOW :O  :
+
+//(
+//	path splitBy /\./
+//	//path splitBy "." - here may be used this pattern as well, 
+//	//regex is better with more complex patterns
+//) reduce (
+//	(e, acc = ds) -> acc[e]
+//)
+
+
+
+
+// [3,5,6,7] reduce (e, acc=0) -> acc + e
+//1st iteration - acc = 0, e = 3 -> acc = 3
+//2nd - acc = 3, e = 5 -> acc = 8
+//3rd - acc = 8, e = 6 -> acc = 14
+//4th - acc = 14, e = 7 -> acc = 21 which is output of reduce
+
+
+
+
+//first divide then bring together
+//(payload divideBy 2) reduce (
+//	(e, acc = {}) -> acc ++ e
+//)
+
+
+
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="recursion" doc:id="c0b989e3-2071-4b30-aa82-ea93db9e4170" >
+		<ee:transform doc:name="Transform Message" doc:id="68d788ab-2540-4c09-83da-84272b38bf28" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/dw
+
+
+fun recsum(n : Number) = 
+	if (n <= 0) 0 else n + recsum(n - 1)
+
+---
+
+
+recsum(254)
+
+// how to extend stack size?
+// com.mulesoft.dw.stacksize = 1000
+// tail-recursion : ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

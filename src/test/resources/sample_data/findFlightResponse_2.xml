@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><ns2:findFlightResponse xmlns:ns2="http://soap.training.mulesoft.com/">
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A1B2C3</code>
+        <departureDate>2018/03/20</departureDate>
+        <destination>SFO</destination>
+        <emptySeats>40</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 737</planeType>
+        <price>400.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A1BTT4</code>
+        <departureDate>2018/02/12</departureDate>
+        <destination>SFO</destination>
+        <emptySeats>30</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 777</planeType>
+        <price>593.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A14244</code>
+        <departureDate>2018/02/12</departureDate>
+        <destination>SFO</destination>
+        <emptySeats>10</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 787</planeType>
+        <price>294.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A1B2C4</code>
+        <departureDate>2018/02/11</departureDate>
+        <destination>LAX</destination>
+        <emptySeats>10</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 737</planeType>
+        <price>199.99</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A134DS</code>
+        <departureDate>2018/04/11</departureDate>
+        <destination>LAX</destination>
+        <emptySeats>40</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 777</planeType>
+        <price>750.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A1QWER</code>
+        <departureDate>2018/08/11</departureDate>
+        <destination>LAX</destination>
+        <emptySeats>18</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 747</planeType>
+        <price>496.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A1FGF4</code>
+        <departureDate>2018/02/13</departureDate>
+        <destination>PDX</destination>
+        <emptySeats>80</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 777</planeType>
+        <price>958.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>AFFFC4</code>
+        <departureDate>2018/02/20</departureDate>
+        <destination>PDX</destination>
+        <emptySeats>30</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 777</planeType>
+        <price>283.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A1B3D4</code>
+        <departureDate>2018/02/12</departureDate>
+        <destination>PDX</destination>
+        <emptySeats>10</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 777</planeType>
+        <price>385.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A1B34S</code>
+        <departureDate>2018/06/11</departureDate>
+        <destination>CLE</destination>
+        <emptySeats>50</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 707</planeType>
+        <price>420.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A12342</code>
+        <departureDate>2018/07/11</departureDate>
+        <destination>CLE</destination>
+        <emptySeats>17</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 727</planeType>
+        <price>308.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A14444</code>
+        <departureDate>2017/09/21</departureDate>
+        <destination>CLE</destination>
+        <emptySeats>0</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 777</planeType>
+        <price>1308.0</price>
+    </return>
+    <return>
+        <airlineName>Delta</airlineName>
+        <code>A1ASD4</code>
+        <departureDate>2017/09/11</departureDate>
+        <destination>CLE</destination>
+        <emptySeats>40</emptySeats>
+        <origin>MUA</origin>
+        <planeType>Boing 757</planeType>
+        <price>736.0</price>
+    </return>
+</ns2:findFlightResponse>
